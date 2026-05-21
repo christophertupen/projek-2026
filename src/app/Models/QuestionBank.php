@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Material extends Model
+class QuestionBank extends Model
 {
-    protected $fillable = ['name', 'subject_id', 'description', 'file_url'];
-
     public function subject()
     {
         return $this->belongsTo(Subject::class);
@@ -17,4 +15,5 @@ class Material extends Model
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+
 }

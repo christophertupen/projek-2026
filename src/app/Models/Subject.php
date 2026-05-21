@@ -12,4 +12,15 @@ class Subject extends Model
     {
         return $this->hasMany(Material::class);
     }
+
+    public function questionBanks()
+    {
+        return $this->hasMany(QuestionBank::class);
+    }
+
+    public function quizzes()
+    {
+        return $this->hasManyThrough(Quiz::class, QuestionBank::class);
+    }
+
 }

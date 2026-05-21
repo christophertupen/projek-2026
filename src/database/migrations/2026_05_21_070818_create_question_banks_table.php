@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('question_banks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
+            $table->string('title');
             $table->text('description')->nullable();
+            $table->string('pdf_file');
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('question_banks');
     }
 };

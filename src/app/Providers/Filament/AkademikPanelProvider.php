@@ -25,6 +25,9 @@ class AkademikPanelProvider extends PanelProvider
         return $panel
             ->id('akademik')
             ->path('akademik')
+            ->spa()
+            ->login()
+            ->passwordReset()
             ->colors([
                 'primary' => Color::Amber,
             ])

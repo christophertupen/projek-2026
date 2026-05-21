@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Question extends Model
+{
+    public function quiz()
+    {
+        return $this->belongsTo(Quiz::class);
+    }
+
+    public function options()
+    {
+        return $this->hasMany(QuestionOption::class);
+    }
+
+    public function answer()
+    {
+        return $this->hasManyThrough(QuizAnswer::class, QuestionAttempt::class);
+    }
+    
+}

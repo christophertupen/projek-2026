@@ -2,9 +2,9 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\SubjectResource\Pages;
-use App\Filament\Admin\Resources\SubjectResource\RelationManagers;
-use App\Models\Subject;
+use App\Filament\Admin\Resources\QuestionAttemptResource\Pages;
+use App\Filament\Admin\Resources\QuestionAttemptResource\RelationManagers;
+use App\Models\QuestionAttempt;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SubjectResource extends Resource
+class QuestionAttemptResource extends Resource
 {
-    protected static ?string $model = Subject::class;
+    protected static ?string $model = QuestionAttempt::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -31,14 +31,7 @@ class SubjectResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                //
             ])
             ->filters([
                 //
@@ -63,9 +56,9 @@ class SubjectResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSubjects::route('/'),
-            'create' => Pages\CreateSubject::route('/create'),
-            'edit' => Pages\EditSubject::route('/{record}/edit'),
+            'index' => Pages\ListQuestionAttempts::route('/'),
+            'create' => Pages\CreateQuestionAttempt::route('/create'),
+            'edit' => Pages\EditQuestionAttempt::route('/{record}/edit'),
         ];
     }
 }
