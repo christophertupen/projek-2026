@@ -19,6 +19,16 @@ class QuizResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Quiz';
+
+    protected static ?string $modelLabel = 'Quiz';
+
+    protected static ?string $pluralModelLabel = 'Quiz';
+
+    protected static ?string $navigationGroup = 'Pembelajaran';
+
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form

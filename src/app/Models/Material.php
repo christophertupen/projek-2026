@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Material extends Model
 {
-    protected $fillable = ['name', 'subject_id', 'description', 'file_url'];
+    protected $fillable = [
+        'subject_id',
+        'teacher_id',
+        'title',
+        'content',
+        'file',
+        'youtube_url',
+    ];
 
     public function subject()
     {

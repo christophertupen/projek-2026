@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    protected $fillable = ['name', 'code', 'description'];
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 
     public function materials()
     {
@@ -20,7 +23,6 @@ class Subject extends Model
 
     public function quizzes()
     {
-        return $this->hasManyThrough(Quiz::class, QuestionBank::class);
+        return $this->hasMany(Quiz::class);
     }
-
 }

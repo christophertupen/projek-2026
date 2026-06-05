@@ -19,6 +19,16 @@ class QuestionBankResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Bank Soal';
+
+    protected static ?string $modelLabel = 'Bank Soal';
+
+    protected static ?string $pluralModelLabel = 'Bank Soal';
+
+    protected static ?string $navigationGroup = 'Pembelajaran';
+
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form

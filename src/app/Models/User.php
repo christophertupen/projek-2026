@@ -69,7 +69,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'akademik' => $this->hasRole('akademik'),
         'guru' => $this->hasRole('guru'),
         'siswa' => $this->hasRole('siswa'),
-        'orangtua' => $this->hasRole('orang_tua'),
+        'orangtua' => $this->hasRole('orangtua'),
         default => false,
         };
     }

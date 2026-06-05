@@ -23,8 +23,8 @@ class OrangTuaPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('orangTua')
-            ->path('orangTua')
+            ->id('orangtua')
+            ->path('orangtua')
             ->spa()
             ->login()
             ->passwordReset()
