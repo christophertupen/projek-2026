@@ -3,7 +3,6 @@
 namespace App\Filament\Siswa\Resources;
 
 use App\Filament\Siswa\Resources\QuizAnswerResource\Pages;
-use App\Filament\Siswa\Resources\QuizAnswerResource\RelationManagers;
 use App\Models\QuizAnswer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,7 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class QuizAnswerResource extends Resource
 {
@@ -22,6 +20,8 @@ class QuizAnswerResource extends Resource
     protected static ?string $navigationLabel = 'Jawaban Quiz';
 
     protected static ?string $navigationGroup = 'Quiz';
+
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -80,7 +80,31 @@ class QuizAnswerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-            ]);
+            ])
+            ->bulkActions([]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('attempt', function (Builder $query) {
+                $query->where('student_id', auth()->id());
+            });
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit($record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete($record): bool
+    {
+        return false;
     }
 
     public static function getRelations(): array
@@ -94,8 +118,6 @@ class QuizAnswerResource extends Resource
     {
         return [
             'index' => Pages\ListQuizAnswers::route('/'),
-            'create' => Pages\CreateQuizAnswer::route('/create'),
-            'edit' => Pages\EditQuizAnswer::route('/{record}/edit'),
         ];
     }
 }

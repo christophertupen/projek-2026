@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
@@ -14,10 +15,10 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory,HasRoles, Notifiable;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang boleh diisi secara massal.
      *
      * @var list<string>
      */
@@ -32,7 +33,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atribut yang disembunyikan saat data dikirim ke array/json.
      *
      * @var list<string>
      */
@@ -42,7 +43,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Casting tipe data atribut.
      *
      * @return array<string, string>
      */
@@ -58,22 +59,55 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         if ($this->avatar_url) {
             return asset('storage/' . $this->avatar_url);
-        } else {
-            $hash = md5(strtolower(trim($this->email)));
-
-            return 'https://www.gravatar.com/avatar/' . $hash . '?d=mp&r=g&s=250';
         }
+
+        $hash = md5(strtolower(trim($this->email)));
+
+        return 'https://www.gravatar.com/avatar/' . $hash . '?d=mp&r=g&s=250';
     }
 
-    public function canAccessPanel(Panel $panel) : bool
+    public function canAccessPanel(Panel $panel): bool
     {
+        // Refresh permission cache untuk menghindari error "Forbidden" saat login
+        \Illuminate\Support\Facades\Cache::forget(config('permission.cache.key'));
+        
         return match ($panel->getId()) {
-        'admin' => $this->hasRole('admin'),
-        'akademik' => $this->hasRole('akademik'),
-        'guru' => $this->hasRole('guru'),
-        'siswa' => $this->hasRole('siswa'),
-        'orangtua' => $this->hasRole('orangtua'),
-        default => false,
+            'admin' => $this->hasRole('admin'),
+            'akademik' => $this->hasRole('akademik'),
+            'guru' => $this->hasRole('guru'),
+            'siswa' => $this->hasRole('siswa'),
+            'orangtua' => $this->hasRole('orangtua'),
+            default => false,
         };
+    }
+
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class, 'teacher_id');
+    }
+
+    public function questionBanks()
+    {
+        return $this->hasMany(QuestionBank::class, 'teacher_id');
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class, 'teacher_id');
+    }
+
+    public function quizAttempts()
+    {
+        return $this->hasMany(QuizAttempt::class, 'student_id');
     }
 }
