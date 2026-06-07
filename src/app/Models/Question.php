@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    protected $fillable = [
+        'quiz_id',
+        'question',
+        'score',
+    ];
+
     public function quiz()
     {
         return $this->belongsTo(Quiz::class);
@@ -16,9 +22,8 @@ class Question extends Model
         return $this->hasMany(QuestionOption::class);
     }
 
-    public function answer()
+    public function answers()
     {
-        return $this->hasManyThrough(QuizAnswer::class, QuestionAttempt::class);
+        return $this->hasMany(QuizAnswer::class);
     }
-    
 }

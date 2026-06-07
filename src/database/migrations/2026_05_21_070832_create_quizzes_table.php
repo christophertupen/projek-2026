@@ -13,14 +13,22 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('question_bank_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
+
+            $table->foreignId('subject_id')
+                ->constrained('subjects')
+                ->cascadeOnDelete();
+
+            $table->foreignId('teacher_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
             $table->string('title');
             $table->text('description')->nullable();
-            $table->integer('duration')->default(60); 
+            $table->integer('duration')->default(60);
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();
             $table->boolean('is_active')->default(false);
+
             $table->timestamps();
         });
     }

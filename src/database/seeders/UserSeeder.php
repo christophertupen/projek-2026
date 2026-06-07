@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,32 +15,51 @@ class UserSeeder extends Seeder
     {
         $admin = User::firstOrCreate(
             ['email' => 'admin@admin.com'],
-            ['name' => 'Admin', 'password' => Hash::make('password')]
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('password'),
+            ]
         );
-        $admin->assignRole('admin');
+        $admin->syncRoles(['admin']);
 
         $akademik = User::firstOrCreate(
             ['email' => 'akademik@admin.com'],
-            ['name' => 'Akademik', 'password' => Hash::make('password')]
+            [
+                'name' => 'Akademik',
+                'password' => Hash::make('password'),
+                'nip' => 'AKD001',
+            ]
         );
-        $akademik->assignRole('akademik');
+        $akademik->syncRoles(['akademik']);
 
         $guru = User::firstOrCreate(
             ['email' => 'guru@admin.com'],
-            ['name' => 'Guru', 'password' => Hash::make('password')]
+            [
+                'name' => 'Guru',
+                'password' => Hash::make('password'),
+                'nip' => 'GR001',
+            ]
         );
-        $guru->assignRole('guru');
-
-        $siswa = User::firstOrCreate(
-            ['email' => 'siswa@admin.com'],
-            ['name' => 'Siswa', 'password' => Hash::make('password')]
-        );
-        $siswa->assignRole('siswa');
+        $guru->syncRoles(['guru']);
 
         $orangtua = User::firstOrCreate(
             ['email' => 'orangtua@admin.com'],
-            ['name' => 'Orang Tua', 'password' => Hash::make('password')]
+            [
+                'name' => 'Orang Tua',
+                'password' => Hash::make('password'),
+            ]
         );
-        $orangtua->assignRole('orangtua');
+        $orangtua->syncRoles(['orangtua']);
+
+        $siswa = User::firstOrCreate(
+            ['email' => 'siswa@admin.com'],
+            [
+                'name' => 'Siswa',
+                'password' => Hash::make('password'),
+                'nis' => 'SIS001',
+                'parent_id' => $orangtua->id,
+            ]
+        );
+        $siswa->syncRoles(['siswa']);
     }
 }

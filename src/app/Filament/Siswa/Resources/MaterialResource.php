@@ -19,11 +19,38 @@ class MaterialResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Materi';
+
+    protected static ?string $navigationGroup = 'Pembelajaran';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('subject_id')
+                    ->label('Mata Pelajaran')
+                    ->relationship('subject', 'name')
+                    ->disabled(),
+
+                Forms\Components\TextInput::make('title')
+                    ->label('Judul Materi')
+                    ->disabled(),
+
+                Forms\Components\RichEditor::make('content')
+                    ->label('Isi Materi')
+                    ->disabled()
+                    ->columnSpanFull(),
+
+                Forms\Components\FileUpload::make('file')
+                    ->label('File')
+                    ->disk('public')
+                    ->disabled()
+                    ->columnSpanFull(),
+
+                Forms\Components\TextInput::make('youtube_url')
+                    ->label('Video YouTube')
+                    ->disabled()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -31,18 +58,40 @@ class MaterialResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('subject.name')
+                    ->label('Mata Pelajaran')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Judul Materi')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('teacher.name')
+                    ->label('Guru')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\IconColumn::make('file')
+                    ->label('File')
+                    ->boolean(),
+
+                Tables\Columns\TextColumn::make('youtube_url')
+                    ->label('Video')
+                    ->limit(35)
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\ViewAction::make(),
             ]);
     }
 
